@@ -1,0 +1,20 @@
+name: Archive QA
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Exact Otzaria/archive commit to validate
+        required: true
+        type: string
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: Otzaria/archive
+          ref: ${{ inputs.ref }}
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - run: dart analyze --fatal-infos
+      - run: dart test
